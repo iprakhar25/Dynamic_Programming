@@ -1,0 +1,25 @@
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int a = grid.length;
+        int b = grid[0].length;
+        int dp[][] = new int [a][b];
+        for(int i = 0;i<a;i++)
+        {
+            for(int j = 0;j<b;j++)
+             dp[i][j] = -1;
+        }
+        return paths(a-1, b-1, grid, dp);
+
+    }
+
+    int paths(int m, int n, int grid[][], int dp[][])
+    {
+        if(m == 0 && n == 0) return grid[m][n];
+        if(m<0 || n<0) return 100001;
+        if(dp[m][n] != -1)  return dp[m][n];
+
+        int up = paths(m-1, n, grid, dp) + grid[m][n];
+        int left = paths(m, n-1, grid, dp) + grid[m][n];
+        return dp[m][n] = Math.min(up, left);
+    }
+}
