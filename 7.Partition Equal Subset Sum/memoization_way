@@ -1,0 +1,28 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+      int totsum = 0;
+      for(int i = 0;i<nums.length;i++)
+        totsum += nums[i];
+      if(totsum % 2 != 0)   return false;
+      int dp[][] = new int [201][totsum+1];
+      for(int i = 0;i<201;i++)
+       for(int j = 0;j<totsum+1;j++)
+         dp[i][j] = -1;
+      int target = totsum/2;
+      return subsetsum(nums.length-1, nums, target, dp);  
+    }
+
+    boolean subsetsum(int index, int nums[], int target, int dp[][]) {
+        if(target == 0)  return true;
+        if(index == 0)  return (nums[0] == target);
+
+        if(dp[index][target] != -1)  return dp[index][target]==0?false:true;;
+
+        boolean noTake = subsetsum(index-1, nums, target, dp);
+        boolean take = false;
+        if(target > nums[index])
+          take = subsetsum(index-1, nums, target-nums[index], dp);
+        dp[index][target] = (take || noTake)?1:0;
+        return take||noTake;
+    }
+}
